@@ -150,7 +150,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="bg-white/30 z-[100] fixed w-full backdrop-blur-xl">
+    <div className="bg-white/30 z-[100] fixed top-0 w-full backdrop-blur-xl">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>

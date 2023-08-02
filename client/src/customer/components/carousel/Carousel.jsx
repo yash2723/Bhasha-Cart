@@ -11,7 +11,6 @@ const Carousel = () => {
     return (
         <div className="pt-[65px] h-[100vh] mainSlider">
             <AliceCarousel items={items} disableDotsControls autoPlay disableButtonsControls autoPlayInterval={2000} infinite />
-            
         </div>
     );
 }
