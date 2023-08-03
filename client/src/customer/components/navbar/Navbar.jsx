@@ -425,7 +425,7 @@ export default function Navbar() {
                   {
                     true ? (
                       <div>
-                        <Avatar className="text-white" onClick={handleUserClick} aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} sx={{bgcolor: deepPurple[500], color: "white", cursor: "pointer"}}> Y </Avatar>
+                        <Avatar className="text-white" onClick={handleUserClick} aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} sx={{backgroundColor: "rgb(79 70 229)", color: "white", cursor: "pointer"}}> Y </Avatar>
                         <Menu id="basic-menu" anchorEl={anchorEl} open={openUserMenu} onClose={handleCloseUserMenu} MenuListProps={{"aria-labelledby": "basic-button"}}>
                           <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
                           <MenuItem>My Orders</MenuItem>

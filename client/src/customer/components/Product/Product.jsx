@@ -27,7 +27,7 @@ export default function Product() {
     const searchParams = new URLSearchParams(location.search);
 
     let filterValue = searchParams.getAll(sectionId);
-    console.log(filterValue);
+    // console.log(filterValue);
 
     if(filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
       filterValue = filterValue[0].split(",").filter((item) => item !== value);
