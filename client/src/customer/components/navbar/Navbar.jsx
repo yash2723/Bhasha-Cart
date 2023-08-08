@@ -3,6 +3,7 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Avatar, Menu, Button, MenuItem } from '@mui/material'
 import { deepPurple } from '@mui/material/colors'
+import { useNavigate } from 'react-router-dom'
 
 const navigation = {
   categories: [
@@ -133,8 +134,9 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
   const openUserMenu = Boolean(anchorEl);
 
   const handleUserClick = (event) => {
@@ -147,6 +149,12 @@ export default function Navbar() {
 
   const handleOpen = () => {
 
+  }
+
+  const handleCategoryClick = (category, section, item, close) => {
+    // setOpen(false);
+    navigate(`/${category.id}/${section.id}/${item.name}`);
+    // close();
   }
 
   return (
@@ -389,9 +397,9 @@ export default function Navbar() {
                                           >
                                             {section.items.map((item) => (
                                               <li key={item.name} className="flex">
-                                                <a href={item.href} className="hover:text-gray-800">
+                                                <p onClick={() => handleCategoryClick(category, section, item)} className="hover:text-gray-800 cursor-pointer">
                                                   {item.name}
-                                                </a>
+                                                </p>
                                               </li>
                                             ))}
                                           </ul>
@@ -428,7 +436,7 @@ export default function Navbar() {
                         <Avatar className="text-white" onClick={handleUserClick} aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} sx={{backgroundColor: "rgb(79 70 229)", color: "white", cursor: "pointer"}}> Y </Avatar>
                         <Menu id="basic-menu" anchorEl={anchorEl} open={openUserMenu} onClose={handleCloseUserMenu} MenuListProps={{"aria-labelledby": "basic-button"}}>
                           <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-                          <MenuItem>My Orders</MenuItem>
+                          <MenuItem onClick={() => {navigate("/account/order"); setAnchorEl(null);}}>My Orders</MenuItem>
                           <MenuItem>Logout</MenuItem>
                         </Menu>
                       </div>
