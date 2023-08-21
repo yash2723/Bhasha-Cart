@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -25,13 +27,13 @@ public class Order {
     @ManyToOne
     private User user;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
     private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     @OneToOne
-    private Address shippingAddress;
+    private Address shippingAddress = new Address();
     @Embedded
-    private PaymentDetails paymentDetails;
+    private PaymentDetails paymentDetails = new PaymentDetails();
     private double totalPrice;
     private Integer totalDiscountedPrice;
     private Integer discount;

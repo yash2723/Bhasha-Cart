@@ -6,6 +6,7 @@ import com.yash.ecommerce.dto.LoginRequest;
 import com.yash.ecommerce.exception.UserException;
 import com.yash.ecommerce.model.User;
 import com.yash.ecommerce.repository.UserRepository;
+import com.yash.ecommerce.service.CartService;
 import com.yash.ecommerce.service.CustomUserServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomUserServiceImplementation customUserServiceImplementation;
+    @Autowired
+    private CartService cartService;
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException {
         String email = user.getEmail();
@@ -52,6 +55,7 @@ public class AuthController {
         createdUser.setLastName(lastName);
 
         User savedUser = userRepository.save(createdUser);
+        cartService.createCart(savedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
