@@ -1,9 +1,12 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Avatar, Menu, Button, MenuItem } from '@mui/material'
 import { deepPurple } from '@mui/material/colors'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AuthModal from '../../auth/AuthModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUser, logout } from '../../../state/auth/Action'
 
 const navigation = {
   categories: [
@@ -135,7 +138,12 @@ function classNames(...classes) {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const navigate = useNavigate();
+  const jwt = localStorage.getItem("jwt");
+  const {auth} = useSelector(store => store);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const openUserMenu = Boolean(anchorEl);
 
@@ -148,13 +156,38 @@ export default function Navbar() {
   }
 
   const handleOpen = () => {
+    setOpenAuthModal(true);
+  }
 
+  const handleClose = () => {
+    setOpenAuthModal(false);
+    navigate("/");
   }
 
   const handleCategoryClick = (category, section, item, close) => {
     // setOpen(false);
     navigate(`/${category.id}/${section.id}/${item.name}`);
     // close();
+  }
+
+  useEffect(() => {
+    if(jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt])
+
+  useEffect(() => {
+    if(auth.user) {
+      handleClose();
+    }
+    if(location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user])
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
   }
 
   return (
@@ -431,19 +464,19 @@ export default function Navbar() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {
-                    true ? (
+                    (auth.user) ? (
                       <div>
-                        <Avatar className="text-white" onClick={handleUserClick} aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} sx={{backgroundColor: "rgb(79 70 229)", color: "white", cursor: "pointer"}}> Y </Avatar>
+                        <Avatar className="text-white" onClick={handleUserClick} aria-controls={open ? "basic-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} sx={{backgroundColor: "rgb(79 70 229)", color: "white", cursor: "pointer"}}> {auth.user.firstName.charAt(0).toUpperCase()} </Avatar>
                         <Menu id="basic-menu" anchorEl={anchorEl} open={openUserMenu} onClose={handleCloseUserMenu} MenuListProps={{"aria-labelledby": "basic-button"}}>
                           <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
                           <MenuItem onClick={() => {navigate("/account/order"); setAnchorEl(null);}}>My Orders</MenuItem>
-                          <MenuItem>Logout</MenuItem>
+                          <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                       </div>
                     ) : (
-                      <Button onClick={handleOpen} className="text-sm font-medium text-grey-700 hover:text-grey-800">
+                      <button onClick={handleOpen} className="font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-md">
                         Login
-                      </Button>
+                      </button>
                     )
                   }
                 </div>
@@ -472,6 +505,7 @@ export default function Navbar() {
           </div>
         </nav>
       </header>
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   )
 }
