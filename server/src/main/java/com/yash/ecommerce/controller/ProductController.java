@@ -38,6 +38,12 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/products/all")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.findAllProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
 //    @GetMapping("/products/search")
 //    public ResponseEntity<List<Product>> searchProductHandler(@RequestParam String q) {
 //        List<Product> products = productService.searchProduct(q);
