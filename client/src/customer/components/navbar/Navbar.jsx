@@ -161,7 +161,7 @@ export default function Navbar() {
 
   const handleClose = () => {
     setOpenAuthModal(false);
-    navigate("/");
+    // navigate("/");
   }
 
   const handleCategoryClick = (category, section, item, close) => {
@@ -491,7 +491,7 @@ export default function Navbar() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <a href="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0"
                       aria-hidden="true"
