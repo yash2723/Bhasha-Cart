@@ -5,7 +5,7 @@ export const createOrder = (reqData) => async (dispatch) => {
     dispatch({type: CREATE_ORDER_REQUEST});
     try {
         const {data} = await api.post(
-            `/api/orders`,
+            `/api/orders/`,
             reqData.address
         )
         if(data.id) {
@@ -31,6 +31,7 @@ export const getOrderById = (orderId) => async (dispatch) => {
             type: GET_ORDER_BY_ID_SUCCESS,
             payload: data,
         });
+        console.log(data)
     }
     catch(error) {
         dispatch({ type: GET_ORDER_BY_ID_FAILURE, payload: error.message });
