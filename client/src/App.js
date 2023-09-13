@@ -10,6 +10,7 @@ import Product from './customer/components/Product/Product';
 import ProductDetails from './customer/components/ProductDetails/ProductDetails';
 import Home from './customer/pages/home/Home';
 import CustomerRoutes from './routes/CustomerRoutes';
+import AdminRoutes from './routes/AdminRoutes';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
 
       <Routes>
         <Route path="/*" element={<CustomerRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
       </Routes>
       
     </div>
